@@ -1,0 +1,72 @@
+version: "3"
+services:
+  minio:
+    image: minio/minio:latest
+    # image: bitnami/minio:latest
+    hostname: minio
+    container_name: userdata-minio
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: always
+    volumes:
+      - ./minio-data:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      MINIO_ROOT_USER: &user admin
+      MINIO_ROOT_PASSWORD: &password password
+      MINIO_NOTIFY_WEBHOOK_ENABLE_FLASK: on
+      MINIO_NOTIFY_WEBHOOK_ENDPOINT_FLASK: http://app:5000/webhook
+    command: server /data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 20s
+      timeout: 10s
+      retries: 3
+
+  minio-create-bucket:
+    image: minio/mc
+    container_name: userdata-mc
+    depends_on:
+      - minio
+    environment:
+      MINIO_ROOT_USER: *user
+      MINIO_ROOT_PASSWORD: *password
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc config host add myminio http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD}) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb myminio/datalake;
+      /usr/bin/mc policy download myminio/datalake;
+      curl -f -s http://app:5000/init;
+      sleep 5;
+      /usr/bin/mc event add myminio/datalake arn:minio:sqs::FLASK:webhook --event get,put,delete;
+      /usr/bin/mc event list myminio/datalake;
+      exit 0;
+      "
+  app:
+    container_name: userdata-app
+    build: ../app
+    # image: userdata:1.0.1
+    hostname: localhost
+    ports:
+      - 8080:5000
+    volumes:
+      - ./app-data:/app-data
+      - ../02-src-data:/src-data
+    environment:
+      MINIO: 'minio:9000'
+      MINIO_PREFIX: 'http://localhost:9000'
+      MINIO_ROOT_USER: *user
+      MINIO_ROOT_PASSWORD: *password
+    healthcheck:
+      test: "curl -f -s http://127.0.0.1:5000/health || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+volumes:
+  minio-data:
+  app-data:
+  02-src-data:

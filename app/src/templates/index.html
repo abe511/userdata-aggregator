@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>User Data</title>
+</head>
+<body>
+    <form action="/data" method="GET">
+        <fieldset name="get-data">
+            <legend for="get-data">Get User Data</legend>
+            <label for="is-image">Has image</label>
+            <input id="is-image" type="checkbox" name="is_image_exists">
+            <br>
+            <label for="min-age">Minimum age</label>
+            <input id="min-age" type="number" name="min_age" min="1" max="150">
+            <br>
+            <label for="max-age">Maximum age</label>
+            <input id="max-age" type="number" name="max_age" min="1" max="150">
+            <br>
+            <input type="submit" value="GET DATA">
+        </fieldset>
+    </form>
+    <form action="/stats" method="GET">
+        <fieldset name="get-data">
+            <legend for="get-data">Get Average Age</legend>
+            <label for="is-image">Has image</label>
+            <input id="is-image" type="checkbox" name="is_image_exists">
+            <br>
+            <label for="min-age">Minimum age</label>
+            <input id="min-age" type="number" name="min_age" min="1" max="150">
+            <br>
+            <label for="max-age">Maximum age</label>
+            <input id="max-age" type="number" name="max_age" min="1" max="150">
+            <br>
+            <input type="submit" value="GET STATS">
+        </fieldset>
+    </form>
+    <form action="/data" method="POST">
+        <input id="update" type="submit" value="UPDATE DATA">
+    </form>
+</body>
+</html>

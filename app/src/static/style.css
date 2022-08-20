@@ -1,0 +1,82 @@
+*,
+*::before,
+*::after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    color: rgb(8, 28, 66);
+    border-color: rgb(8, 28, 66);
+    font-family: Lato, Geneva, Verdana, sans-serif;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+form {
+    margin: 2rem auto;
+    width: max-content;
+    height: max-content;
+}
+
+fieldset {
+    padding: 1rem;
+    border: 1px solid;
+    border-radius: 0.2rem;
+}
+
+legend {
+    padding: 0 0.5rem;
+}
+
+input {
+    margin: 0.3rem 0;
+    border: 1px solid;
+}
+
+input[type="submit"] {
+    padding: 0.5rem 2rem;
+    background-color: white;
+    border: 1px solid;
+    border-radius: 0.2rem;
+}
+
+input[type="submit"]:hover {
+    background-color: rgba(200, 200, 200, 0.2);
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+input[type="submit"]:active {
+    background-color: rgba(200, 200, 200, 0.5);
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+
+input[type="checkbox"] {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid;
+    border-radius: 0.2rem;
+}
+
+#min-age, #max-age {
+    width: 5rem;
+    padding: 0.3rem;
+    border-radius: 0.2rem;
+    align-self: right;
+}
+
+#update {
+    color: white;
+    background-color: rgb(8, 28, 66);
+}
+#update:hover {
+    background-color: #0b224e;
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+#update:active {
+    background-color: #0d1f41;
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
